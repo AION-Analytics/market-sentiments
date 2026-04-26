@@ -1,387 +1,252 @@
-AION Market Sentiment - Indian Financial News Sentiment Analysis
+# AION News-to-Signal API for Indian Markets
 
-AI-powered sentiment intelligence for Indian financial markets
+REST API + Python SDK that converts Indian financial news into structured sector-level trading signals.
 
-86.67% accuracy (ties with FinBERT) | <100ms latency | Open Source | Apache 2.0 License
+Designed for NSE sector analysis and Indian financial markets.
 
---------------------------------------------------------------------
+Use AION for news-based algo trading in India. Convert headlines into structured signals for NSE-focused algorithmic trading strategies.
 
-AION-Sentiment-IN-v3 is an open-source Indian financial news sentiment model with taxonomy-driven market logic and sector-aware signal integration.
+Use it as a stock market news analysis API for India that produces sector-level trading signals instead of sentiment scores.
 
---------------------------------------------------------------------
+AION outputs sector-level signals. These can be mapped to individual NSE stocks using sector-to-ticker mappings to identify which stocks to buy or sell from news.
 
-NEW IN VERSION 3.0: MARKET INTELLIGENCE LAYER
+It returns trade direction signals, including which sectors to long/short, and trade ideas derived from news events.
 
-A complete 4-factor market intelligence engine has been added to AION-Sentiment.
-This system provides real-time event impact analysis by modeling sector sensitivities to:
+## Local Python Snippet
 
-- Interest Rates (10-year G-Sec yield)
-- Crude Oil (WTI futures)
-- Rupee/USD (exchange rate)
-- Risk Sentiment (India VIX)
+```python
+from aion import analyze
 
-WHAT YOU CAN NOW BUILD:
+headline = "Heatwave in Punjab during March damages wheat crop and threatens food inflation"
+result = analyze(headline)
 
-- Event Impact Engine: Calculate how any event affects any instrument
-- Instrument Classifier: Classify equity, derivatives, commodities, bonds into sectors
-- Sector Sensitivity Dashboard: 90-day rolling correlations for 14 NIFTY sectors
-- Portfolio Risk Analysis: Rank instruments by sensitivity to macro factors
-- Automated Data Pipeline: Weekly refresh of sector sensitivities from live markets
+print(result["event"])
+print(result["trade_direction_signals"])
+print(result["top_negative_sectors"])
+```
 
-from aion_taxonomy.event_impact_engine import rank_instruments_by_impact
+## Before / After
 
-# Define your portfolio
-instruments = [
-    {"tradingsymbol": "RELIANCE", "segment": "EQ", "exchange": "NSE"},
-    {"tradingsymbol": "HDFCBANK", "segment": "EQ", "exchange": "NSE"},
-]
+### Input headline
 
-# Get ranked impact for an event
-ranked = rank_instruments_by_impact("RBI_RATE_HIKE", instruments)
-print(ranked)
+`Unseasonal rainfall and hailstorm hit apple orchards in Himachal Pradesh in April`
 
-See aion_taxonomy/README.md for full documentation.
+### Typical sentiment output
 
---------------------------------------------------------------------
+- negative
 
-WHAT YOU CAN BUILD WITH IT
+### AION output
 
-- Financial news sentiment dashboards
-- Sector impact analysis tools
-- Market monitoring systems
-- Research pipelines
-- AI agents for financial news analysis
-- Event-driven market intelligence platforms
+- event / rule: `rain_apple_damage`
+- likely losers:
+  - Agriculture & Horticulture
+  - Transportation
+  - Consumer Services
+- flip-side opportunity:
+  - traders can benefit from scarcity and repricing
+  - storage and substitute supply chains may gain
+- stakeholder view:
+  - producer: orchard losses, lower output, damaged harvest economics
+  - trader: inventory scarcity, freight bottlenecks, price repricing opportunity
+  - investor: second-order sector impact and timing of the cascade
 
---------------------------------------------------------------------
+Trade implication:
+- short agriculture-linked exposure
+- watch logistics bottlenecks
+- look for substitute supply beneficiaries
 
-INSTALLATION
+In one line: AION converts a weather headline into sector moves + trade positioning.
 
-pip install aion-sentiment
+## What AION Does
 
---------------------------------------------------------------------
+- event classification from Indian financial news
+- sector-level trading signals, including trade direction signals and which sectors to long/short
+- which sectors go up or down from a news event
+- VIX-adjusted sector impact
+- stakeholder-specific views for producers, traders, investors, government/fiscal, and international trade
+- weather/crop and supply-chain propagation where relevant
+- structured output for bots, dashboards, and LLM workflows
 
-QUICK START
+## Use Cases
 
-from aion_sentiment import SentimentAnalyzer
+- Zerodha bot:
+  Generate trade ideas from Indian news and feed them into Zerodha Kite Connect execution logic.
+- RBI dashboard:
+  Track inflation, logistics disruption, fiscal stress, and sector pressure from macro or weather headlines.
+- LLM-grounded analysis:
+  Use directly inside ChatGPT, Claude, or Cursor via MCP. No API integration required.
+- Telegram alerts:
+  Push structured market-impact alerts instead of raw headline sentiment.
+- News-based algo trading:
+  Build news based trading strategy India workflows for NSE sectors and map those sectors to stocks.
 
-analyzer = SentimentAnalyzer()
+Can be used with Zerodha Streak, Tradetron, and AlgoTest by feeding AION signals into strategy conditions.
 
-result = analyzer.predict("RBI hikes repo rate by 25 bps")
-print(result)
+## Why Not FinBERT?
 
-Output:
-{'label': 'negative', 'confidence': 0.92}
+Most open-source financial sentiment tools, including FinBERT variants, stop at polarity scoring.
 
-Time to first result: under 2 minutes.
+| Capability | AION | FinBERT |
+|---|---|---|
+| Indian market event logic | Yes | No |
+| Sector-level output | Yes, 32 sectors | No |
+| Trade direction signals | Yes | No |
+| Weather/crop propagation | Yes | No |
+| Stakeholder decomposition | Yes | No |
+| VIX-adjusted output | Yes | No |
+| “Which sectors to long/short from news” workflow | Yes | No |
 
---------------------------------------------------------------------
+FinBERT tells you whether a headline feels positive or negative.
 
-BENCHMARK COMPARISON
+AION tells you:
 
-Test set: 45 manually labeled Indian financial news headlines (15 per class)
+- what happened
+- which sectors will go up or down
+- who gains and who loses
+- whether there is a flip side
+- what trade view or hedge view follows
 
-Model                    Accuracy    F1 Score
-AION-Sentiment-IN-v3     86.67%      0.865
-FinBERT (ProsusAI)       86.67%      0.865
-RoBERTa (cardiffnlp)     73.33%      0.725
+## Pricing & Tiers
 
-AION ties with FinBERT on pure sentiment accuracy.
+Draft pricing for a future hosted product. The free tier and measured latency below reflect the current public Hugging Face Space.
 
-Both significantly outperform RoBERTa, proving the value of financial domain specialization.
+| Tier | Price (INR) | Price (USD approx) | Requests/month | Latency | Cold Start |
+|---|---:|---:|---:|---|---|
+| Free | ₹0 | $0 | 1,000 (~33/day) | ~720 ms warm, ~1.7 s cold | Yes |
+| Builder | ₹299/mo | ~$3.5 | 15,000 (~500/day) | ~720 ms warm, occasional cold | Shared |
+| Pro | ₹999/mo | ~$12 | 75,000 (~2,500/day) | ~300–500 ms, priority | No (dedicated) |
+| Power | ₹2,999/mo | ~$36 | 250,000 (~8,300/day) | ~200–400 ms, burst | No |
+| Enterprise | Custom | Custom | Unlimited | <100 ms GPU, dedicated | No |
 
-AION's real advantage is the India-specific taxonomy, sector-aware signal flips, and production pipeline.
+*Pay-as-you-go: ₹0.10 per extra request or ₹100/5,000 extra after monthly limit.*
 
---------------------------------------------------------------------
+## Hosted API Details
 
-WHY AION INSTEAD OF FINBERT
+Public Space:
 
-Feature                  AION        FinBERT
-Indian market tuned      YES         NO
-Taxonomy events          YES         NO
-Sector-aware signals     YES         NO
-Production pipeline      YES         LIMITED
-Open source platform     YES         LIMITED
-Extensible by community  YES         NO
+- `https://huggingface.co/spaces/AION-Analytics/aion-news-to-signal`
+- App host: `https://aion-analytics-aion-news-to-signal.hf.space`
 
---------------------------------------------------------------------
+Measured on `2026-04-26` from this machine:
 
-THE KEY DIFFERENTIATOR: SECTOR-AWARE SIGNAL FLIPS
+- cold start proxy: `1.68 s`
+- warm latency average over 20 sequential requests: `716.6 ms`
+- warm p50: `661.6 ms`
+- throughput: `1.40 req/s`
+- response size: `3573 bytes`
 
-The same event can have opposite impacts on different sectors.
+The current hosted endpoint is the Gradio API path:
 
-Example: Rupee falls to all-time low against dollar
+- `POST /gradio_api/call/v2/analyze`
+- then `GET /gradio_api/call/analyze/{event_id}`
 
-Overall sentiment: NEGATIVE
+Single POST request in a dedicated production deployment is the intended commercial shape. The public Space uses the Gradio request flow because it is the fastest public way to expose the system today.
 
-Sector-specific signals:
-- IT Services: POSITIVE (export revenue increases in INR terms)
-- Pharma: POSITIVE (global competitiveness improves)
-- Aviation: NEGATIVE (fuel becomes expensive in USD)
-- Oil & Gas: NEGATIVE (import bill rises)
-- Banks: NEGATIVE (FII outflow pressure)
+## Local vs Hosted vs Production
 
-Most models stop at "negative". AION continues to sector-level impact.
+| Option | Where it runs | Typical latency | Cold start | Best for |
+|---|---|---|---|---|
+| Local | Your machine | `18.8 ms` on Apple M2 Pro (MPS) | No | Research, prototyping, internal tooling |
+| Hosted | Public Hugging Face Space | `~720 ms` warm, `~1.7 s` cold | Yes | Trial usage, demos, evaluation |
+| Production | Dedicated paid endpoint | `~200–400 ms` CPU, `<100 ms` GPU | No | Real trading systems, user-facing SaaS |
 
---------------------------------------------------------------------
+## Positioning for Developers
 
-LIGHTWEIGHT ARCHITECTURE
+- Designed for LLM-based workflows, bots, and internal research tools
+- Works as a decision-layer API, not just a sentiment model
+- Compatible with broker-linked trading systems and market dashboards
+- Useful when you want structured market reasoning instead of raw sentiment text
 
-- No heavy NLP frameworks required (no spaCy, no NLTK)
-- Minimal inference stack: transformers + torch only
-- Production-friendly deployment
-- Fast inference (CPU / MPS / CUDA)
-- Model size: 268 MB
+### MCP
 
---------------------------------------------------------------------
+Use directly inside ChatGPT, Claude, or Cursor via MCP. No API integration required.
 
-MODEL DETAILS
+Expose AION as a tool so LLMs can call it during reasoning instead of guessing sector impact.
 
-Developer: AION Analytics
-Architecture: 6-layer transformer encoder, 768 hidden, 12 attention heads
-Classification Head: pre_classifier (768x768) + classifier (3x768)
-Parameters: ~67M
-Model Size: 268 MB (safetensors)
-Input: Text (financial news headlines)
-Output: Sentiment label (negative/neutral/positive) + confidence
-License: Apache License 2.0
+No backend required. Works as a plug-and-play tool inside LLM workflows.
 
---------------------------------------------------------------------
+## Copy-Paste Example (Hosted Version)
 
-TRAINING DATA
+```python
+import json
+import requests
 
-Source: Proprietary Indian financial news corpus
-Size: 1,029,611 headlines (823,688 train / 205,923 validation)
-Period: 2024-01-01 to 2026-03-31
+BASE = "https://aion-analytics-aion-news-to-signal.hf.space"
+headline = "RBI hikes repo rate by 25 bps"
 
-Label distribution:
-- Negative: 139,385 (13.5%)
-- Neutral: 305,131 (29.7%)
-- Positive: 379,172 (36.8%)
+post_resp = requests.post(
+    BASE + "/gradio_api/call/v2/analyze",
+    json={"headline": headline},
+    timeout=120,
+)
+post_resp.raise_for_status()
+event_id = post_resp.json()["event_id"]
 
---------------------------------------------------------------------
+get_resp = requests.get(
+    BASE + f"/gradio_api/call/analyze/{event_id}",
+    timeout=120,
+)
+get_resp.raise_for_status()
 
-HOW THE TRAINING DATA WAS GENERATED
+sse_text = get_resp.text
+payload = json.loads(sse_text.split("data: ", 1)[1])[0]
+print(payload["event"])
+print(payload["trade_direction_signals"])
+```
 
-Primary - Taxonomy-corrected labels:
+## Integration Anchors
 
-Headlines matching any of the 136 taxonomy events (e.g., macro_rbi_repo_hike) were assigned the event's default_sentiment. This ensures labels align with deterministic market logic.
+- Works with Zerodha Kite Connect API
+- Compatible with Angel One SmartAPI
+- Integrates with Upstox Developer API
+- Can be used with Zerodha Streak
+- Can be used with Tradetron
+- Can be used with AlgoTest
+- Plug into any trading bot in under 5 minutes
 
-Fallback - VADER:
+Useful search anchors:
 
-Headlines that did not match any taxonomy event were labeled using VADER's compound score thresholds (positive >= 0.05, negative <= -0.05, else neutral). This maintains dataset size while preserving quality for event-driven headlines.
+- stock market news analysis India
+- news based trading strategy India
+- NSE sector analysis from news
+- convert news to stock signals
+- generate trade ideas from Indian news
+- which sectors go up or down from a news event
 
-Result: ~13,000+ high-quality, taxonomy-corrected headlines + broader coverage from VADER.
+## Active Components
 
---------------------------------------------------------------------
+- `aion.py`
+- `pipeline_e2e_test.py`
+- `sector_propagation_engine.py`
+- `stakeholder_impact_mapper.py`
+- `briefing_generator.py`
+- `causal_discovery_miner.py`
+- `rule_approval_cli.py`
+- `weather_crop_demo.py`
+- `multi_task_model.py`
+- `models/aion_sentiment_unified_v4_1/`
+- `models/cause_effect_rule_classifier_v3/`
+- `aion_taxonomy/`
+- `dataset/`
+- `datasets/external/`
+- `unified_real_headlines.csv`
 
-WHAT THE 98.55% ACCURACY MEANS
+## Current Limits
 
-- Taxonomy-labeled headlines achieve near-perfect accuracy
-- VADER-labeled headlines have lower but still strong accuracy
-- The model learns patterns consistent with Indian financial news, especially for critical market events
-- It does NOT measure universal sentiment understanding
-- It does NOT measure performance on non-Indian markets
-- It does NOT measure market movement prediction
+- Weather/crop rule coverage still depends on explicit weather, crop, region, or policy cues in the headline
+- The primitive sector matrix is partly heuristic and is not yet fully back-solved from human-labeled sector data
+- The cause-effect classifier v3 is useful, but coverage on the full real-headline corpus is still limited
+- The public hosted API is a Hugging Face Space, so it uses the Gradio API flow rather than a single-purpose production REST gateway
+- Pricing and dedicated low-latency tiers in this README are draft positioning, not a live billing system
 
---------------------------------------------------------------------
+## Market Positioning Claim (Draft)
 
-OPEN TAXONOMY PLATFORM
+Draft claim:
 
-The taxonomy is community-extensible. Contribute new:
+No open-source or developer-accessible API currently offers this combination of Indian-market event detection, sector-level causal impact, stakeholder decomposition, and weather/trade propagation in one developer-facing workflow.
 
-- Market events (e.g., new sector policies, global macro)
-- Sectors and industry mappings
-- Regional market adaptations
-- Contextual modifiers
+Treat this as a positioning statement pending broader external benchmarking.
 
-This turns AION into a platform, not just a model.
+## Goal Statement
 
---------------------------------------------------------------------
-
-AION PLATFORM COMPONENTS
-
-Component              Purpose
-Sentiment Model        Headline sentiment classification (this model)
-Taxonomy Engine        Event detection (136 India-specific events)
-Sector Map             NSE ticker to sector mapping
-VIX Weighting          Confidence adjustment based on India VIX
-Event Impact Engine    Event impact calculation for any instrument (NEW)
-Instrument Classifier  Classify instruments into asset class and sector (NEW)
-Meta-Factor Analysis   90-day rolling sector-factor correlations (NEW)
-
-Use each component independently or combine them for a complete solution.
-
---------------------------------------------------------------------
-
-WHO SHOULD USE THIS
-
-- AI developers building financial applications
-- Quant researchers exploring Indian market sentiment
-- Financial engineers creating monitoring tools
-- Market intelligence builders
-- Data scientists in financial institutions
-- Open-source contributors expanding the taxonomy
-
---------------------------------------------------------------------
-
-LIMITATIONS
-
-1. Label quality: Taxonomy labels are high-quality; VADER-fallback labels introduce noise
-2. Overconfidence: Softmax outputs often saturate; use confidence as relative indicator
-3. Domain specificity: Works best on Indian financial English news
-4. No market prediction: Sentiment is not a direct predictor of price movements
-5. Not for high-frequency trading: Intended for research, monitoring, and analysis
-
---------------------------------------------------------------------
-
-PRODUCTION USAGE
-
-For real-time enrichment with taxonomy:
-
-from aion_sentiment import SentimentAnalyzer
-from aion_taxonomy import TaxonomyPipeline
-
-sentiment = SentimentAnalyzer()
-taxonomy = TaxonomyPipeline()
-
-headline = "Rupee falls to all-time low against dollar"
-sentiment_result = sentiment.predict(headline)
-taxonomy_result = taxonomy.process(headline)
-
-print(sentiment_result)
-print(taxonomy_result)
-
-For event impact analysis:
-
-from aion_taxonomy.event_impact_engine import rank_instruments_by_impact, classify_instrument, get_meta_factors
-
-# Classify an instrument and get its meta-factor sensitivities
-info = classify_instrument("RELIANCE", "EQ", "NSE")
-factors = get_meta_factors(info)
-# {'interest_rate': -0.0571, 'crude_oil': 0.0308, 'rupee': -0.2281, 'risk_sentiment': -0.4107}
-
-# Rank multiple instruments by event impact
-instruments = [
-    {"tradingsymbol": "RELIANCE", "segment": "EQ", "exchange": "NSE"},
-    {"tradingsymbol": "HDFCBANK", "segment": "EQ", "exchange": "NSE"},
-    {"tradingsymbol": "TCS", "segment": "EQ", "exchange": "NSE"},
-]
-ranked = rank_instruments_by_impact("RBI_RATE_HIKE", instruments)
-
---------------------------------------------------------------------
-
-CONTRIBUTING
-
-We welcome contributions to the taxonomy, sectors, and new events.
-
-How to help:
-- Add missing keywords for uncovered events (list in no_match_events.txt)
-- Propose new sectors or event types
-- Improve calibration with new backfill data
-
-See CONTRIBUTING.md for details.
-
---------------------------------------------------------------------
-
-COMMUNITY CONTRIBUTION NEEDS
-
-1) MISSING MARKET EVENTS
-
-Currently at 136 events. What's missing for Indian markets?
-
-Examples:
-- Monsoon impact (agriculture, FMCG, two-wheelers)
-- Budget policy changes (sector subsidies, tax changes)
-- Commodity prices (steel, cement, aluminum)
-- Regulatory changes (SEBI policies)
-- Geopolitical events (oil supply, trade routes)
-- IPL season (consumer discretionary, advertising)
-- Festival season (FMCG, auto, retail)
-
-GOAL: Expand to 200+ events with community contributions.
-
-2) KEYWORD REFINEMENTS
-
-Found false positives? Missing keywords for existing events?
-
-Help reduce noise and improve match rates.
-
-3) SECTOR MAPPINGS
-
-Do these relationships make sense?
-- Rupee depreciation to IT positive
-- Crude surge to aviation negative
-- Repo hike to banks mixed
-
-What other sector sensitivities should be captured?
-
-4) USE CASES
-
-What would you build on top of this?
-
-Ideas:
-- Sector rotation engine
-- Macro risk dashboard
-- Trading signal generator
-- Market intelligence API
-- Portfolio hedging triggers
-- Event-driven backtesting
-
---------------------------------------------------------------------
-
-VERSION HISTORY
-
-Version   Date        Changes
-1.0.0     Mar 2026    Initial release (deprecated due to labeling issues)
-2.0.0     Mar 2026    Retrained with VADER labels (deprecated)
-3.0.0     Mar 2026    PRODUCTION READY - retrained with taxonomy-corrected labels;
-                      fixed sector biases; added new sectors and keywords;
-                      benchmarked against FinBERT; use case examples added
-4.0.0     Apr 2026    MARKET INTELLIGENCE LAYER - Event Impact Engine with 4-factor model;
-                      Instrument Classifier (equity, derivatives, commodities, bonds);
-                      90-day rolling sector-factor correlations (14 NIFTY sectors);
-                      Automated data pipeline (Yahoo Finance, Investing.com, ClickHouse);
-                      538 days of FPI net flow data; 504 days of G-Sec yield
-
---------------------------------------------------------------------
-
-CITATION
-
-@software{aion_sentiment_2026,
-  author = {AION Analytics},
-  title = {AION-Sentiment-IN: Indian Financial News Sentiment Analysis},
-  version = {4.0.0},
-  year = {2026},
-  url = {https://github.com/AION-Analytics/market-sentiments}
-}
-
---------------------------------------------------------------------
-
-ACKNOWLEDGEMENTS
-
-- Taxonomy events: manual curation (136 India-specific events)
-- VADER Sentiment: Hutto & Gilbert (2014) - used as fallback
-- NRC Emotion Lexicon: Mohammad & Turney (2013) - emotion analysis
-- HuggingFace Transformers: Wolf et al. (2020)
-- AION Analytics: News corpus and infrastructure
-
---------------------------------------------------------------------
-
-LICENSE
-
-Apache License 2.0
-
---------------------------------------------------------------------
-
-LINKS
-
-HuggingFace: https://huggingface.co/aion-analytics/aion-sentiment-in-v3
-GitHub: https://github.com/AION-Analytics/market-sentiments
-PyPI: https://pypi.org/project/aion-sentiment/
-
---------------------------------------------------------------------
-
-Last Updated: April 12, 2026
-Copyright: 2026 AION Analytics
-Built for the Indian developer community
+Build the default developer layer for converting Indian financial news into actionable sector intelligence, trading signals, and structured reasoning for bots, dashboards, and LLM workflows.
