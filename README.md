@@ -1,5 +1,7 @@
 # AION News-to-Signal API for Indian Markets
 
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+
 REST API + Python SDK that converts Indian financial news into structured sector-level trading signals.
 
 Designed for NSE sector analysis and Indian financial markets.
