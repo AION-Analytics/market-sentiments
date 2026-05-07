@@ -1,6 +1,8 @@
+[![Version](https://img.shields.io/badge/version-1.0.2-blue)](https://pypi.org/project/aion-news-to-signal/1.0.2/)
+
 # AION India Event Intelligence
 
-Convert Indian financial headlines into structured sector-level event intelligence — not sentiment, not trading signals.
+Structured event intelligence for Indian financial markets.
 
 Formerly `aion-news-to-signal`.
 
@@ -149,22 +151,24 @@ Enterprise: custom, GPU-dedicated. Contact via dashboard.
 
 ## Access And Links
 
-- API key registration:
-  - `https://dashboard.aiondashboard.site/access/register`
+- API gateway:
+  - `https://dashboard.aiondashboard.site/systems/api-gateway`
 - Website model page:
   - `https://dashboard.aiondashboard.site/models/news-to-signal`
+- API key registration:
+  - `https://dashboard.aiondashboard.site/access/register`
 - Managed API:
   - `https://api.aiondashboard.site/v1/analyze`
 - PyPI package:
   - `https://pypi.org/project/aion-news-to-signal/`
+- GitHub repository:
+  - `https://github.com/AION-Analytics/aion-news-to-signal`
 - Hugging Face model surface:
   - `https://huggingface.co/AION-Analytics/aion-news-to-signal`
 - Hugging Face demo Space:
   - `https://huggingface.co/spaces/AION-Analytics/aion-news-to-signal`
 - MCP server repo:
   - `https://github.com/AION-Analytics/aion-mcp-server`
-- MCP access and docs:
-  - `https://dashboard.aiondashboard.site/models/news-to-signal`
 
 ## Current Limits
 
