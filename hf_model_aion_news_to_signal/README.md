@@ -1,6 +1,6 @@
 ---
 language: en
-license: apache-2.0
+license: agpl-3.0
 tags:
 - finance
 - market-intelligence
@@ -102,6 +102,10 @@ Canonical key note:
 
 AION India Event Intelligence is an API-first system. The model weights are not publicly distributed. Production access is through the managed AION API only. The PyPI package (`aion-news-to-signal`) provides client-side tooling and MCP server entrypoints — it does not bundle model weights.
 
+### Licensing Note
+
+The public client/code surface for AION News-to-Signal is distributed under AGPL-3.0-or-later. Some deterministic taxonomy rule files in the main GitHub repository are governed separately under Business Source License 1.1 with a future AGPL change date. See the repository `LICENSE` and `LICENSE.BSL11` files for the exact split.
+
 ### Use This For
 
 - Indian financial headline reasoning
@@ -121,7 +125,7 @@ AION India Event Intelligence is an API-first system. The model weights are not 
 1. Try the demo: `https://huggingface.co/spaces/AION-Analytics/aion-news-to-signal`
 2. Get an API key: `https://dashboard.aiondashboard.site/access/register`
 3. View full documentation: `https://dashboard.aiondashboard.site/models/news-to-signal`
-4. Integrate via MCP: `https://mcpmarket.com/server/aion-news-to-signal`
+4. Integrate via MCP: `https://dashboard.aiondashboard.site/models/news-to-signal`
 
 ## Cross Links
 
@@ -133,8 +137,8 @@ AION India Event Intelligence is an API-first system. The model weights are not 
   - `https://huggingface.co/spaces/AION-Analytics/aion-news-to-signal`
 - MCP repo:
   - `https://github.com/AION-Analytics/aion-mcp-server`
-- MCP listing:
-  - `https://mcpmarket.com/server/aion-news-to-signal`
+- MCP access and docs:
+  - `https://dashboard.aiondashboard.site/models/news-to-signal`
 
 ## Citation
 
