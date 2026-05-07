@@ -163,8 +163,8 @@ Enterprise: custom, GPU-dedicated. Contact via dashboard.
   - `https://huggingface.co/spaces/AION-Analytics/aion-news-to-signal`
 - MCP server repo:
   - `https://github.com/AION-Analytics/aion-mcp-server`
-- MCP listing:
-  - `https://mcpmarket.com/server/aion-news-to-signal`
+- MCP access and docs:
+  - `https://dashboard.aiondashboard.site/models/news-to-signal`
 
 ## Current Limits
 
