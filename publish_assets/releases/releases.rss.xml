@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>AION Analytics OSS Releases</title>
+    <link>https://github.com/AION-Analytics/aion-news-to-signal</link>
+    <description>Announcements for AION Analytics public package and model updates.</description>
+    <language>en-us</language>
+    <managingEditor>AION Analytics dev team</managingEditor>
+    <item>
+      <title>AION India Event Intelligence 1.0.2</title>
+      <link>https://pypi.org/project/aion-news-to-signal/</link>
+      <guid isPermaLink="false">aion-news-to-signal-1.0.2</guid>
+      <pubDate>Sun, 03 May 2026 22:25:00 +0530</pubDate>
+      <description>Project: AION India Event Intelligence&#10;Version: 1.0.2&#10;Safety: behavior clarification, safe upgrade&#10;Summary: Display rename to AION India Event Intelligence and public output-contract cleanup.&#10;&#10;Highlights:&#10;- Standardizes the public product identity as AION India Event Intelligence.&#10;- Standardizes the output around sector_vector and sector_directional_bias.&#10;- Removes public recommendation framing from docs, MCP metadata, and tutorial surfaces.&#10;&#10;Upgrade: pip install --upgrade aion-news-to-signal&#10;&#10;Validation:&#10;- python -c "from aion_news_to_signal import analyze; r=analyze('RBI hikes repo rate by 25 bps'); print('sector_vector' in r); print('sector_directional_bias' in r)"&#10;&#10;PyPI: https://pypi.org/project/aion-news-to-signal/&#10;Documentation: https://dashboard.aiondashboard.site/models/news-to-signal&#10;API Gateway: https://dashboard.aiondashboard.site/systems/api-gateway&#10;Registration: https://dashboard.aiondashboard.site/access/register</description>
+    </item>
+    <item>
+      <title>aion-indian-market-calendar 1.1.1</title>
+      <link>https://pypi.org/project/aion-indian-market-calendar/</link>
+      <guid isPermaLink="false">aion-indian-market-calendar-1.1.1</guid>
+      <pubDate>Fri, 01 May 2026 18:20:00 +0530</pubDate>
+      <description>Project: aion-indian-market-calendar&#10;Version: 1.1.1&#10;Safety: safe patch&#10;Summary: Timezone fallback fix for environments without system tzdata.&#10;&#10;Highlights:&#10;- Added tzdata dependency for ZoneInfo compatibility.&#10;- Added pytz fallback for constrained runtimes such as Pyodide.&#10;- Corrected naive datetime attachment in fallback mode.&#10;&#10;Upgrade: pip install --upgrade aion-indian-market-calendar&#10;&#10;Validation:&#10;- python -c "from aion_indian_market_calendar import is_market_open; print(is_market_open('NSE'))"&#10;- python -c "from aion_indian_market_calendar import IndiaMarketCalendar; from datetime import datetime; import pytz; cal=IndiaMarketCalendar(); print(cal.get_session(datetime(2026,1,27,9,5,tzinfo=pytz.timezone('Asia/Kolkata')), market='NFO') is not None)"&#10;&#10;PyPI: https://pypi.org/project/aion-indian-market-calendar/&#10;Documentation: https://huggingface.co/datasets/AION-Analytics/aion-indian-market-calendar</description>
+    </item>
+    <item>
+      <title>aion-indian-market-calendar 1.1.0</title>
+      <link>https://pypi.org/project/aion-indian-market-calendar/1.1.0/</link>
+      <guid isPermaLink="false">aion-indian-market-calendar-1.1.0</guid>
+      <pubDate>Fri, 01 May 2026 14:00:00 +0530</pubDate>
+      <description>Project: aion-indian-market-calendar&#10;Version: 1.1.0&#10;Safety: behavior change, controlled upgrade&#10;Summary: Canonical market resolution fix for aliases and index inputs.&#10;&#10;Highlights:&#10;- NFO and FNO now resolve to NSE_EQUITY_DERIVATIVES.&#10;- NIFTY and BANKNIFTY now resolve to derivatives by default.&#10;- Unknown market inputs now raise ValueError instead of failing silently.&#10;&#10;Upgrade: pip install --upgrade aion-indian-market-calendar&#10;&#10;Validation:&#10;- python -c "from aion_indian_market_calendar import IndiaMarketCalendar; from datetime import datetime; import pytz; cal=IndiaMarketCalendar(); dt=datetime(2026,1,27,9,20,tzinfo=pytz.timezone('Asia/Kolkata')); print(cal.get_session(dt, market='NFO') is not None); print(cal.get_session(dt, market='NIFTY') is not None)"&#10;&#10;PyPI: https://pypi.org/project/aion-indian-market-calendar/1.1.0/&#10;Documentation: https://huggingface.co/datasets/AION-Analytics/aion-indian-market-calendar</description>
+    </item>
+  </channel>
+</rss>
