@@ -1,2 +1,5 @@
 gradio>=5.29.0
 requests>=2.31
+lemminflect>=0.2.3
+whoosh>=2.7.4
+nltk>=3.9

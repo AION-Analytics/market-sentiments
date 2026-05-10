@@ -1,0 +1,45 @@
+name: Deploy HF Space Rule Updates
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "aion_taxonomy/cause_effect_rules_v3.yaml"
+      - "data/taxonomy_updates/accepted_rules.yaml"
+      - "hf_space_aion_news_to_signal/**"
+  workflow_dispatch:
+
+jobs:
+  deploy-space:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Hugging Face tooling
+        run: pip install --upgrade huggingface_hub
+
+      - name: Deploy Space when credentials are configured
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_SPACE_REPO: ${{ secrets.HF_SPACE_REPO }}
+        run: |
+          if [ -z "$HF_TOKEN" ] || [ -z "$HF_SPACE_REPO" ]; then
+            echo "HF_TOKEN or HF_SPACE_REPO secret missing; skipping Space deploy."
+            exit 0
+          fi
+          mkdir -p hf_space_aion_news_to_signal/aion_taxonomy
+          cp aion_taxonomy/cause_effect_rules_v3.yaml hf_space_aion_news_to_signal/aion_taxonomy/cause_effect_rules_v3.yaml
+          python - <<'PY'
+          import os
+          from huggingface_hub import HfApi
+
+          token = os.environ["HF_TOKEN"]
+          repo_id = os.environ["HF_SPACE_REPO"]
+          api = HfApi(token=token)
+          api.upload_folder(
+              folder_path="hf_space_aion_news_to_signal",
+              repo_id=repo_id,
+              repo_type="space",
+              commit_message="Deploy News-to-Signal rule update",
+          )
+          PY

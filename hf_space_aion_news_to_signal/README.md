@@ -6,65 +6,36 @@ colorTo: indigo
 sdk: gradio
 app_file: app.py
 pinned: false
-short_description: Demo UI only. Production access requires API key.
+short_description: 3-request demo. API key required for production.
 ---
 
-# AION India Event Intelligence — Demo UI
+# AION India Event Intelligence — Rate-Limited Demo
 
-Convert Indian financial headlines into structured sector-level intelligence using causal propagation — not sentiment, not trading signals.
-
-Formerly `aion-news-to-signal`.
-
-## LLM Capture
-
-### Component
+Structured event intelligence for Indian financial markets.
 
 This Space is a demo surface for AION India Event Intelligence.
 
-It is not the supported production runtime.
+- Demo limit: 3 requests per visitor per day
+- Production access requires an API key
+- Registration: `https://dashboard.aiondashboard.site/access/register`
 
-### Production Contract
-
-Production usage flows through the managed AION API:
+Production API contract:
 
 - `POST https://api.aiondashboard.site/v1/analyze`
 - header:
   - `X-API-Key: <key>`
 
-### Demo Contract
+This Space is for evaluation only. It is not the supported production runtime.
 
-This Space UI calls the managed AION API behind the scenes.
+## Cross Links
 
-- demo access is mediated by AION
-- production access requires your own API key
-- quota and access control are enforced at the API layer
-
-### Access
-
-Request API access here:
-
-- `https://dashboard.aiondashboard.site/models/news-to-signal`
-
-## Human Understanding
-
-This Space exists so developers and evaluators can understand what the system returns without treating the Space as the production integration path.
-
-It is useful when you want to inspect:
-
-- event resolution
-- sector-level impact output
-- positive and negative sector bias
-- stakeholder explanation structure
-
-This demo surface is not intended to imply:
-
-- open production inference
-- offline/local support guarantees
-- quota-free usage
-
-## Website
-
-- model page:
+- API gateway:
+  - `https://dashboard.aiondashboard.site/systems/api-gateway`
+- Website model page:
   - `https://dashboard.aiondashboard.site/models/news-to-signal`
-- main website:
-  - `https://dashboard.aiondashboard.site/`
+- API key registration:
+  - `https://dashboard.aiondashboard.site/access/register`
+- GitHub repository:
+  - `https://github.com/AION-Analytics/aion-news-to-signal`
+- PyPI package:
+  - `https://pypi.org/project/aion-news-to-signal/`
